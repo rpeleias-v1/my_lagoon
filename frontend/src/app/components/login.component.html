@@ -2,12 +2,12 @@
     <form (ngSubmit)="onSubmit()" class="ui form" [hidden]="loginService.checkLogin()">
         <div class="field">
             <label for="username">Username</label>
-            <input type="text" required [(ngModel)]="username" ngControl="username" placeholder="Username" name="username" /><br/>
+            <input type="text" required [(ngModel)]="model.username" ngControl="username" placeholder="Username" name="username" /><br/>
         </div>
 
         <div class="field">
             <label for="password">Password</label>
-            <input type="password" required [(ngModel)]="password" ngControl="password" placeholder="Username" name="password" /><br/>
+            <input type="password" required [(ngModel)]="model.password" ngControl="password" placeholder="Username" name="password" /><br/>
         </div>
 
         <button type="submit" class="ui button">Submit</button>

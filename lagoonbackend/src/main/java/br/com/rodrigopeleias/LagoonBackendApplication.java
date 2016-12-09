@@ -19,7 +19,7 @@ public class LagoonBackendApplication {
     public FilterRegistrationBean jwtFilter() {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter((Filter) new JwtFilter());
-        registrationBean.addUrlPatterns("rest/**");
+        registrationBean.addUrlPatterns("/rest/*");
 
         return registrationBean;
     }

@@ -11,7 +11,7 @@ export class LoginService {
 
     sendCredential(model):Observable<any> {
         let tokenUrl1 = "http://localhost:8080/user/login";
-        let headers1 = new Headers({'Content-Type': 'application/json'});
+        let headers1 = new Headers({'Content-type': 'application/json'});
         return this.http.post(tokenUrl1, JSON.stringify(model), {headers: headers1});
     }
 

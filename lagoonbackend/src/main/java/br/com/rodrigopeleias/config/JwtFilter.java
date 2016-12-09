@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -13,20 +14,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtFilter {
+public class JwtFilter extends GenericFilterBean {
+
 
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 
-        final HttpServletRequest httpServletRequest = (HttpServletRequest)request;
-        final HttpServletResponse httpServletResponse = (HttpServletResponse)response;
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         final String authHeader = httpServletRequest.getHeader("authorization");
 
-        if("OPTIONS".equals(httpServletRequest.getMethod())) {
+        if ("OPTIONS".equals(httpServletRequest.getMethod())) {
             ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_OK);
             chain.doFilter(request, response);
         } else {
 
-            if (authHeader == null || authHeader.startsWith("Bearer ")) {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 throw new ServletException("Missing or invalid authorization header");
             }
 
@@ -38,6 +40,9 @@ public class JwtFilter {
             } catch (final SignatureException e) {
                 throw new ServletException("Invalid token");
             }
+
+            chain.doFilter(request, response);
         }
     }
+
 }
