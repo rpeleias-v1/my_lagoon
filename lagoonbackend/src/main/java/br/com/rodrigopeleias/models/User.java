@@ -1,5 +1,6 @@
 package br.com.rodrigopeleias.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class User {
 
     @OneToMany(mappedBy = "user" +
             "", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Photo> photoList;
 
     @ManyToMany

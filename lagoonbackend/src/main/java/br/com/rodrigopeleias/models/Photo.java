@@ -1,5 +1,6 @@
 package br.com.rodrigopeleias.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,7 +23,7 @@ public class Photo {
     private Date created;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference
     private User user;
 
     private int likes;

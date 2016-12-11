@@ -15,8 +15,8 @@ export class LoginService {
         return this.http.post(tokenUrl1, JSON.stringify(model), {headers: headers1});
     }
 
-    sendToken(token):Observable<any> {
-        let tokenUrl2 = "http:/localhost:8080/rest/user/users";
+    sendToken(token):any {
+        let tokenUrl2 = "http://localhost:8080/rest/user/users";
         console.log("Bearer " + token);
 
         let getHeaders = new Headers({'Authorization':'Bearer ' + token});

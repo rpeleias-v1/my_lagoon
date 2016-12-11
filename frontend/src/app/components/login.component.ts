@@ -8,7 +8,7 @@ import { LoginService } from '../services/login.service';
 })
 export class LoginComponent {
 
-    private model = { 'username': '', 'password': ''};
+    private model = { 'username': '', 'password': '' };
     private currentUserName;
 
     constructor(private loginService: LoginService) {
@@ -16,17 +16,20 @@ export class LoginComponent {
     }
 
     onSubmit() {
-        this.loginService.sendCredential(this.model).subscribe( data => {
-            localStorage.setItem("token", JSON.parse(JSON.stringify(data))._body);
-            this.loginService.sendToken(localStorage.getItem("token")).subscribe(data => {
-                this.currentUserName = this.model.username;
-                localStorage.setItem("currentUserName", this.model.username);
-                this.model.username = '';
-                this.model.password = '';
-            }, error => {
-                console.log(error);
-            });
-        }, error => console.log(error)
+        this.loginService.sendCredential(this.model).subscribe(
+            data => {
+                localStorage.setItem("token", JSON.parse(JSON.stringify(data))._body);
+                this.loginService.sendToken(localStorage.getItem("token")).subscribe(
+                    dataToken => {
+                        this.currentUserName = this.model.username;
+                        localStorage.setItem("currentUserName", this.model.username);
+                        this.model.username = '';
+                        this.model.password = '';
+                    },
+                    error => console.log(error)
+                );
+            },
+            error => console.log(error)
         );
     }
 }

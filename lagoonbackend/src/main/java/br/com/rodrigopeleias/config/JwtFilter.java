@@ -17,19 +17,20 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
 
 
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain) throws IOException, ServletException {
 
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        final String authHeader = httpServletRequest.getHeader("authorization");
+        final HttpServletRequest request = (HttpServletRequest) req;
+        final HttpServletResponse response = (HttpServletResponse) res;
+        final String authHeader = request.getHeader("authorization");
 
-        if ("OPTIONS".equals(httpServletRequest.getMethod())) {
-            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_OK);
-            chain.doFilter(request, response);
+        if ("OPTIONS".equals(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            chain.doFilter(req, res);
         } else {
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                throw new ServletException("Missing or invalid authorization header");
+                throw new ServletException ("Missing or invalid Authorization header");
             }
 
             final String token = authHeader.substring(7);
@@ -38,10 +39,11 @@ public class JwtFilter extends GenericFilterBean {
                 final Claims claims = Jwts.parser().setSigningKey("secretkey").parseClaimsJws(token).getBody();
                 request.setAttribute("claims", claims);
             } catch (final SignatureException e) {
-                throw new ServletException("Invalid token");
+                throw new ServletException ("Invalid token");
             }
 
-            chain.doFilter(request, response);
+
+            chain.doFilter(req, res);
         }
     }
 
